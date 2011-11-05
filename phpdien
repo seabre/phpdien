@@ -34,11 +34,11 @@ control_c()
  
 trap control_c SIGINT
 
+
+
 #The lighttpd config file.
 #Does this need to be done a different way?
 #If you said "Yes," you guessed correctly.
-
-
 
 echo '
 server.bind = "0.0.0.0"
