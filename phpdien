@@ -81,4 +81,4 @@ lighttpd -D -f $SERVER_HTTPD_CONFIG &
 
 LIGHTTPD_PID=$!
 
-tail -f $SERVER_ERROR_LOG ; 
+tail -f $SERVER_ERROR_LOG 
