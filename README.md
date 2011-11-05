@@ -18,7 +18,7 @@ After you have installed the required dependencies, clone the repository and cop
 
 You will also need to make the script executable, which you can do like so:
 
-chmod +x phpdien
+`chmod +x phpdien`
 
 ##Usage
 
