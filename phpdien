@@ -1,0 +1,84 @@
+#!/bin/bash
+
+SERVER_RANDOM=$RANDOM
+
+SERVER_ERROR_LOG="/tmp/lighttpd.$SERVER_RANDOM.error.log"
+SERVER_ACCESS_LOG="/tmp/lighttpd.$SERVER_RANDOM.access.log"
+SERVER_HTTPD_CONFIG="lighttpd.$SERVER_RANDOM.conf"
+PHP_SOCKET_DIR="/tmp/phpdien.php.socket.$SERVER_RANDOM"
+
+mkdir $PHP_SOCKET_DIR
+touch $SERVER_ERROR_LOG
+touch $SERVER_ACCESS_LOG
+
+cleanup()
+{
+  rm -f $SERVER_ERROR_LOG $SERVER_HTTPD_CONFIG $SERVER_ACCESS_LOG
+  rm -f $PHP_SOCKET_DIR/*
+  rmdir $PHP_SOCKET_DIR
+  if [ ! -z "$LIGHTTPD_PID" ]
+    then
+      echo "Looks like lighttpd is running..stopping it."
+      kill $LIGHTTPD_PID
+  fi
+  return $?
+}
+ 
+control_c()
+{
+
+  echo -en "\nExiting..\n"
+  cleanup
+  exit $?
+}
+ 
+trap control_c SIGINT
+
+#The lighttpd config file.
+#Does this need to be done a different way?
+#If you said "Yes," you guessed correctly.
+
+
+
+echo '
+server.bind = "0.0.0.0"
+server.port = 8000
+server.document-root = CWD
+server.errorlog          = "'$SERVER_ERROR_LOG'"
+accesslog.filename       = "'$SERVER_ACCESS_LOG'"
+
+index-file.names = ( "index.php", "index.html",
+                    "index.htm", "default.htm" )
+
+server.modules = ("mod_fastcgi", "mod_accesslog")
+
+fastcgi.server = ( ".php" => (( 
+  "bin-path" => "/usr/bin/php-cgi",
+  "socket" => "'$PHP_SOCKET_DIR'/php5.socket",
+)))
+
+mimetype.assign = (  
+  ".css"        =>  "text/css",
+  ".gif"        =>  "image/gif",
+  ".htm"        =>  "text/html",
+  ".html"       =>  "text/html",
+  ".jpeg"       =>  "image/jpeg",
+  ".jpg"        =>  "image/jpeg",
+  ".js"         =>  "text/javascript",
+  ".png"        =>  "image/png",
+  ".swf"        =>  "application/x-shockwave-flash",
+  ".txt"        =>  "text/plain"
+)
+
+$HTTP["useragent"] =~ "^(.*MSIE.*)|(.*AppleWebKit.*)$" {
+  server.max-keep-alive-requests = 0
+}
+' > $SERVER_HTTPD_CONFIG
+
+echo "phpdien - starting server..."
+
+lighttpd -D -f $SERVER_HTTPD_CONFIG &
+
+LIGHTTPD_PID=$!
+
+tail -f $SERVER_ERROR_LOG ; 
