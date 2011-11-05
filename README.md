@@ -10,7 +10,7 @@ If you don't have them or are not sure, getting them in Ubuntu or Debian is easy
 
 `sudo apt-get install lighttpd php5-cgi`
 
-The lighttpd.conf file embedded in the phpdien script was written with Ubuntu in mind, so you may have to modify it slightly to get it to work for your system. It will probably be a good idea in the future to separate it and make it configure it outside of the script.
+The lighttpd.conf file embedded in the phpdien script was written with Ubuntu in mind, so you may have to modify it slightly to get it to work for your system. It will probably be a good idea in the future to separate it and make it configurable outside of the script.
 
 ##Installation
 
