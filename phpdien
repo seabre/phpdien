@@ -1,5 +1,4 @@
 #!/bin/bash
-
 SERVER_RANDOM=$RANDOM
 
 SERVER_ERROR_LOG="/tmp/lighttpd.$SERVER_RANDOM.error.log"
@@ -76,7 +75,9 @@ $HTTP["useragent"] =~ "^(.*MSIE.*)|(.*AppleWebKit.*)$" {
 ' > $SERVER_HTTPD_CONFIG
 
 echo "phpdien - starting server..."
-
+echo
+echo 'You may exit at any time by hitting Control-C'
+echo
 lighttpd -D -f $SERVER_HTTPD_CONFIG &
 
 LIGHTTPD_PID=$!
