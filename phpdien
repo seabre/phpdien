@@ -22,7 +22,7 @@ cleanup()
   fi
   return $?
 }
- 
+
 control_c()
 {
 
@@ -30,7 +30,7 @@ control_c()
   cleanup
   exit $?
 }
- 
+
 trap control_c SIGINT
 
 
@@ -51,12 +51,12 @@ index-file.names = ( "index.php", "index.html",
 
 server.modules = ("mod_fastcgi", "mod_accesslog")
 
-fastcgi.server = ( ".php" => (( 
+fastcgi.server = ( ".php" => ((
   "bin-path" => "/usr/bin/php-cgi",
   "socket" => "'$PHP_SOCKET_DIR'/php5.socket",
 )))
 
-mimetype.assign = (  
+mimetype.assign = (
   ".css"        =>  "text/css",
   ".gif"        =>  "image/gif",
   ".htm"        =>  "text/html",
@@ -66,7 +66,10 @@ mimetype.assign = (
   ".js"         =>  "text/javascript",
   ".png"        =>  "image/png",
   ".swf"        =>  "application/x-shockwave-flash",
-  ".txt"        =>  "text/plain"
+  ".txt"        =>  "text/plain",
+  ".ogm"        =>  "video/ogg",
+  ".ogv"        =>  "video/ogg",
+  ".ogg"        =>  "video/ogg"
 )
 
 $HTTP["useragent"] =~ "^(.*MSIE.*)|(.*AppleWebKit.*)$" {
@@ -82,4 +85,4 @@ lighttpd -D -f $SERVER_HTTPD_CONFIG &
 
 LIGHTTPD_PID=$!
 
-tail -f $SERVER_ERROR_LOG 
+tail -f $SERVER_ERROR_LOG
