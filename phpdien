@@ -75,6 +75,9 @@ mimetype.assign = (
 $HTTP["useragent"] =~ "^(.*MSIE.*)|(.*AppleWebKit.*)$" {
   server.max-keep-alive-requests = 0
 }
+
+server.error-handler-404="/index.php"
+
 ' > $SERVER_HTTPD_CONFIG
 
 echo "phpdien - starting server..."
